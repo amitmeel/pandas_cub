@@ -377,6 +377,34 @@ class TestOtherMethods:
         assert_df_equals(df_result, df_answer)
 
 
-a42 = np.array([-11, 5, 3])
-b42 = np.array([3.4, 5.1, -6])
-df42 = pdc.DataFrame({'a': a42, 'b': b42})
+a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
+b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
+c8 = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+df8 = pdc.DataFrame({'a': a8, 'b': b8, 'c': c8})
+
+
+class TestGrouping:
+
+    def test_value_counts(self):
+        df_temp = pdc.DataFrame({'state': np.array(['texas', 'texas', 'texas', 'florida', 'florida', 'florida', 'florida', 'ohio']),
+                                 'fruit': np.array(['a', 'a', 'a', 'a', 'b', 'b', 'b', 'a'])})
+        df_results = df_temp.value_counts()
+        df_answer = pdc.DataFrame({'state': np.array(['florida', 'texas', 'ohio'], dtype=object),
+                                   'count': np.array([4, 3, 1])})
+        assert_df_equals(df_results[0], df_answer)
+
+        df_answer = pdc.DataFrame({'fruit': np.array(['a', 'b'], dtype=object),
+                                   'count': np.array([5, 3])})
+        assert_df_equals(df_results[1], df_answer)
+
+    def test_value_counts_normalize(self):
+        df_temp = pdc.DataFrame({'state': np.array(['texas', 'texas', 'texas', 'florida', 'florida', 'florida', 'florida', 'ohio']),
+                                 'fruit': np.array(['a', 'a', 'a', 'a', 'b', 'b', 'b', 'a'])})
+        df_results = df_temp.value_counts(normalize=True)
+        df_answer = pdc.DataFrame({'state': np.array(['florida', 'texas', 'ohio'], dtype=object),
+                                   'count': np.array([.5, .375, .125])})
+        assert_df_equals(df_results[0], df_answer)
+
+        df_answer = pdc.DataFrame({'fruit': np.array(['a', 'b'], dtype=object),
+                                   'count': np.array([.625, .375])})
+        assert_df_equals(df_results[1], df_answer)
