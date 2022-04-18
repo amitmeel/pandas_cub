@@ -703,6 +703,31 @@ class DataFrame:
             new_data[col] = values
         return DataFrame(new_data)
 
+
+    def pct_change(self, n=1):
+        """
+        Take the percentage difference between the current value and
+        the nth value above it.
+
+        Parameters
+        ----------
+        n: int
+
+        Returns
+        -------
+        A DataFrame
+        """
+        def func(values):
+            values = values.astype('float')
+            values_shifted = np.roll(values, n)
+            values = values - values_shifted
+            if n >= 0:
+                values[:n] = np.NAN
+            else:
+                values[n:] = np.NAN
+            return values / values_shifted
+        return self._non_agg(func)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
