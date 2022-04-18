@@ -237,3 +237,14 @@ class TestSelection:
 
         with pytest.raises(TypeError):
             df['a'] = set()
+
+    def test_head_tail(self):
+        df_result = df.head(2)
+        df_answer = pdc.DataFrame({'a': a[:2], 'b': b[:2], 'c': c[:2],
+                                   'd': d[:2], 'e': e[:2]})
+        assert_df_equals(df_result, df_answer)
+
+        df_result = df.tail(2)
+        df_answer = pdc.DataFrame({'a': a[-2:], 'b': b[-2:], 'c': c[-2:],
+                                   'd':d[-2:], 'e': e[-2:]})
+        assert_df_equals(df_result, df_answer)
