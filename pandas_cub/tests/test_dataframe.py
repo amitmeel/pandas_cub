@@ -430,6 +430,9 @@ class TestNonAgg:
                                    'b': np.array([3, 5, -6])})
         assert_df_equals(df_result, df_answer)
 
+    def test_copy(self):
+        assert_df_equals(df42, df42.copy())
+
 
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
 b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
