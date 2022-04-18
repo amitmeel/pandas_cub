@@ -433,6 +433,12 @@ class TestNonAgg:
     def test_copy(self):
         assert_df_equals(df42, df42.copy())
 
+    def test_diff(self):
+        df_result = df42.diff(1)
+        df_answer = pdc.DataFrame({'a': np.array([np.nan, 16, -2]),
+                                   'b': np.array([np.nan, 1.7, -11.1])})
+        assert_df_equals(df_result, df_answer)
+
 
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
 b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
