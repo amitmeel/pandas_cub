@@ -581,6 +581,16 @@ class DataFrame:
 
     #### Non-Aggregation Methods ####
 
+    def abs(self):
+        """
+        Takes the absolute value of each value in the DataFrame
+
+        Returns
+        -------
+        A DataFrame
+        """
+        return self._non_agg(np.abs)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
