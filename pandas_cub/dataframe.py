@@ -621,6 +621,22 @@ class DataFrame:
         """
         return self._non_agg(np.cumsum)
 
+    def clip(self, lower=None, upper=None):
+        """
+        All values less than lower will be set to lower
+        All values greater than upper will be set to upper
+
+        Parameters
+        ----------
+        lower: number or None
+        upper: number or None
+
+        Returns
+        -------
+        A DataFrame
+        """
+        return self._non_agg(np.clip, a_min=lower, a_max=upper)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
