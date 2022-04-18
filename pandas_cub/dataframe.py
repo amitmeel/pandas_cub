@@ -657,6 +657,30 @@ class DataFrame:
         """
         return self._non_agg(np.copy)
 
+    def diff(self, n=1):
+        """
+        Take the difference between the current value and
+        the nth value above it.
+
+        Parameters
+        ----------
+        n: int
+
+        Returns
+        -------
+        A DataFrame
+        """
+        def func(values):
+            values = values.astype('float')
+            values_shifted = np.roll(values, n)
+            values = values - values_shifted
+            if n >= 0:
+                values[:n] = np.NAN
+            else:
+                values[n:] = np.NAN
+            return values
+        return self._non_agg(func)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
