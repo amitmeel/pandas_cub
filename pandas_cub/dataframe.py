@@ -462,6 +462,22 @@ class DataFrame:
                 new_data[col] = np.isnan(values)
         return DataFrame(new_data)
 
+    def count(self):
+        """
+        Counts the number of non-missing values per column
+
+        Returns
+        -------
+        A DataFrame
+        """
+        temp_df = self.isna()
+        new_data = {}
+        original_df_lenth = len(self)
+
+        for col, values in temp_df._data.items():
+            new_data[col] = np.array([original_df_lenth - np.sum(values)])
+        return DataFrame(new_data)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
