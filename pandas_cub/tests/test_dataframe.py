@@ -381,6 +381,11 @@ class TestOtherMethods:
         df_answer = pdc.DataFrame({'A': a4, 'b': b4, 'C': c4})
         assert_df_equals(df_result, df_answer)
 
+    def test_drop(self):
+        df_result = df4.drop(['a', 'b'])
+        df_answer = pdc.DataFrame({'c': c4})
+        assert_df_equals(df_result, df_answer)
+
 
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
 b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
