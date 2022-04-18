@@ -61,6 +61,16 @@ class DataFrame:
                 data[column_name] = values.astype(object)
         return data
 
+    def __len__(self):
+        """
+        Make the builtin len function work with our dataframe
+
+        Returns
+        -------
+        int: the number of rows in the dataframe
+        """
+        return len(next(iter(self._data.values())))
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
