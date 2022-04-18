@@ -611,6 +611,16 @@ class DataFrame:
         """
         return self._non_agg(np.maximum.accumulate)
 
+    def cumsum(self):
+        """
+        Finds cumulative sum by column
+
+        Returns
+        -------
+        A DataFrame
+        """
+        return self._non_agg(np.cumsum)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
