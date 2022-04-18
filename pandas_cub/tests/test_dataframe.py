@@ -387,6 +387,20 @@ class TestOtherMethods:
         assert_df_equals(df_result, df_answer)
 
 
+a42 = np.array([-11, 5, 3])
+b42 = np.array([3.4, 5.1, -6])
+df42 = pdc.DataFrame({'a': a42, 'b': b42})
+
+
+class TestNonAgg:
+
+    def test_abs(self):
+        df_result = df42.abs()
+        df_answer = pdc.DataFrame({'a': np.abs(a42), 'b': np.abs(b42)})
+        assert_df_equals(df_result, df_answer)
+
+
+
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
 b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
 c8 = np.array([1, 2, 3, 4, 5, 6, 7, 8])
