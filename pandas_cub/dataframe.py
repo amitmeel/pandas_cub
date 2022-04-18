@@ -478,6 +478,22 @@ class DataFrame:
             new_data[col] = np.array([original_df_lenth - np.sum(values)])
         return DataFrame(new_data)
 
+    def unique(self):
+        """
+        Finds the unique values of each column
+
+        Returns
+        -------
+        A list of one-column DataFrames
+        """
+        dfs = []
+        for col, values in self._data.items():
+            uniques = np.unique(values)
+            dfs.append(DataFrame({col: uniques}))
+        if len(dfs) == 1:
+            return dfs[0]
+        return dfs
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
