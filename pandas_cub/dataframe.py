@@ -18,7 +18,10 @@ class DataFrame:
         self._check_input_types(data)
 
         # check for equal array lengths
-        self._check_array_lengths(data) 
+        self._check_array_lengths(data)
+
+        # convert unicode arrays to object
+        self._data = self._convert_unicode_to_object(data)
 
     def _check_input_types(self, data):
         """
@@ -43,3 +46,12 @@ class DataFrame:
         lengths = [len(values) for values in data.values()]
         if len(set(lengths)) != 1:
             raise ValueError("All arrays (column values) must have the same length")
+
+    def _convert_unicode_to_object(self, data):
+        """
+        Convert unicode arrays to object arrays.
+        """
+        for column_name, values in data.items():
+            if values.dtype.kind == 'U':
+                data[column_name] = values.astype(object)
+        return data
