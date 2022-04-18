@@ -83,3 +83,12 @@ class TestDataFrameCreation:
     def test_values(self):
         values = np.column_stack((a, b, c, d, e))
         assert_array_equal(df.values, values)
+
+    def test_dtypes(self):
+        cols = np.array(['a', 'b', 'c', 'd', 'e'], dtype='O')
+        dtypes = np.array(['string', 'string', 'float', 'bool', 'int'], dtype='O')
+
+        df_result = df.dtypes
+        df_answer = pdc.DataFrame({'Column Name': cols,
+                                   'Data Type': dtypes})
+        assert_df_equals(df_result, df_answer)
