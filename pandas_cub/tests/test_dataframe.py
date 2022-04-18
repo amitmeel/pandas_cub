@@ -405,6 +405,12 @@ class TestNonAgg:
         df_answer = pdc.DataFrame({'a': np.array([-11, -11, -11]),
                                    'b': np.array([3.4, 3.4, -6])})
         assert_df_equals(df_result, df_answer)
+    
+    def test_cummax(self):
+        df_result = df42.cummax()
+        df_answer = pdc.DataFrame({'a': np.array([-11, 5, 5]),
+                                   'b': np.array([3.4, 5.1, 5.1])})
+        assert_df_equals(df_result, df_answer)
 
 
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
