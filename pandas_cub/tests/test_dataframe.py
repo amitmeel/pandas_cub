@@ -196,3 +196,6 @@ class TestSelection:
 
         with pytest.raises(TypeError):
             df[:, set()]
+
+    def test_tab_complete(self):
+        assert ['a', 'b', 'c', 'd', 'e'] == df._ipython_key_completions_()
