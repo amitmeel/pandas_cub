@@ -536,6 +536,27 @@ class DataFrame:
             return dfs[0]
         return dfs
 
+    def rename(self, columns):
+        """
+        Renames columns in the DataFrame
+
+        Parameters
+        ----------
+        columns: dict
+            A dictionary mapping the old column name to the new column name
+
+        Returns
+        -------
+        A DataFrame
+        """
+        if not isinstance(columns, dict):
+            raise TypeError('`columns` must be a dictionary')
+
+        new_data = {}
+        for col, values in self._data.items():
+            new_data[columns.get(col, col)] = values
+        return DataFrame(new_data)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
