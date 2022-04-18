@@ -210,6 +210,15 @@ class DataFrame:
         html += '</tbody></table>'
         return html
 
+    @property
+    def values(self):
+        """
+        Returns
+        -------
+        A single 2D NumPy array of the underlying data
+        """
+        return np.column_stack(self._data.values())
+
 
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
