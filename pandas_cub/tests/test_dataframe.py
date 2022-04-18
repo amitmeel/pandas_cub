@@ -376,6 +376,11 @@ class TestOtherMethods:
                                    'c': np.array([2])})
         assert_df_equals(df_result, df_answer)
 
+    def test_rename(self):
+        df_result = df4.rename({'a': 'A', 'c': 'C'})
+        df_answer = pdc.DataFrame({'A': a4, 'b': b4, 'C': c4})
+        assert_df_equals(df_result, df_answer)
+
 
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
 b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
