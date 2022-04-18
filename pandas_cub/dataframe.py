@@ -333,6 +333,33 @@ class DataFrame:
         # allows for tab completion when doing df['c
         return self.columns
 
+    def __setitem__(self, key, value):
+        # adds a new column or a overwrites an old column
+        if not isinstance(key, str):
+            raise NotImplementedError('Only able to set a single column')
+
+        if isinstance(value, np.ndarray):
+            if value.ndim != 1:
+                raise ValueError('Setting array must be 1D')
+            if len(value) != len(self):
+                raise ValueError('Setting array must be same length as DataFrame')
+        elif isinstance(value, DataFrame):
+            if value.shape[1] != 1:
+                raise ValueError('Setting DataFrame must be one column')
+            if len(value) != len(self):
+                raise ValueError('Setting and Calling DataFrames must be the same length')
+            value = next(iter(value._data.values()))
+        elif isinstance(value, (int, str, float, bool)):
+            value = np.repeat(value, len(self))
+        else:
+            raise TypeError('Setting value must either be a numpy array, '
+                            'DataFrame, integer, string, float, or boolean')
+
+        if value.dtype.kind == 'U':
+            value = value.astype('O')
+
+        self._data[key] = value
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
