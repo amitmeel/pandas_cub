@@ -647,6 +647,16 @@ class DataFrame:
         """
         return self._non_agg(np.round, 'if', decimals=n)
 
+    def copy(self):
+        """
+        Copies the DataFrame
+
+        Returns
+        -------
+        A DataFrame
+        """
+        return self._non_agg(np.copy)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
