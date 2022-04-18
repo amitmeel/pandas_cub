@@ -579,6 +579,30 @@ class DataFrame:
             new_data[columns.get(col, col)] = values
         return DataFrame(new_data)
 
+    #### Non-Aggregation Methods ####
+
+    def _non_agg(self, funcname, kinds='bif', **kwargs):
+        """
+        Generic non-aggregation function
+
+        Parameters
+        ----------
+        funcname: numpy function
+        args: extra arguments for certain functions
+
+        Returns
+        -------
+        A DataFrame
+        """
+        new_data = {}
+        for col, values in self._data.items():
+            if values.dtype.kind in kinds:
+                values = funcname(values, **kwargs)
+            else:
+                values = values.copy()
+            new_data[col] = values
+        return DataFrame(new_data)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
