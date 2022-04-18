@@ -98,4 +98,4 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - widgetsnbextension==3.6.0
-prefix: C:\Users\user\miniconda3\envs\pandas_cub
+# prefix: C:\Users\user\miniconda3\envs\pandas_cub
