@@ -400,6 +400,12 @@ class TestNonAgg:
         assert_df_equals(df_result, df_answer)
 
 
+    def test_cummin(self):
+        df_result = df42.cummin()
+        df_answer = pdc.DataFrame({'a': np.array([-11, -11, -11]),
+                                   'b': np.array([3.4, 3.4, -6])})
+        assert_df_equals(df_result, df_answer)
+
 
 a8 = np.array(['b', 'a', 'a', 'a', 'b', 'a', 'a', 'b'])
 b8 = np.array(['B', 'A', 'A', 'A', 'B', 'B', 'B', 'A'])
