@@ -71,6 +71,45 @@ class DataFrame:
         """
         return len(next(iter(self._data.values())))
 
+    @property
+    def columns(self):
+        """
+        _data holds column names mapped to arrays
+        take advantage of internal ordering of dictionaries to
+        put columns in correct order in list. Only works in 3.6+
+
+        Returns
+        -------
+        list of column names
+        """
+        return list(self._data)
+
+    @columns.setter
+    def columns(self, columns):
+        """
+        Set the column names of the dataframe.
+
+        Parameters
+        ----------
+        columns: list of strings
+            The new column names
+
+        Returns
+        -------
+        Nones
+        """
+        if not isinstance(columns, list):
+            raise TypeError("`columns` must be a list of strings")
+        if not all(isinstance(column, str) for column in columns):
+            raise TypeError("All column names must be a string")
+        if len(columns) != len(self._data):
+            raise ValueError("`columns` must have the same length as the number of columns in the dataframe")
+        if len(columns) != len(set(columns)):
+            raise ValueError("`columns` must not contain duplicate column names")
+        
+        new_data = dict(zip(columns, self._data.values()))
+        self._data = new_data
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
