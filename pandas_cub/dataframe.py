@@ -637,6 +637,16 @@ class DataFrame:
         """
         return self._non_agg(np.clip, a_min=lower, a_max=upper)
 
+    def round(self, n):
+        """
+        Rounds values to the nearest n decimals
+
+        Returns
+        -------
+        A DataFrame
+        """
+        return self._non_agg(np.round, 'if', decimals=n)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
