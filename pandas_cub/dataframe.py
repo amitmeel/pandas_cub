@@ -388,6 +388,28 @@ class DataFrame:
         """
         return self[-n:, :]
 
+    def _agg(self, aggfunc):
+        """
+        Generic aggregation function that applies the
+        aggregation to each column
+
+        Parameters
+        ----------
+        aggfunc: str of the aggregation function name in NumPy
+
+        Returns
+        -------
+        A DataFrame
+        """
+        new_data = {}
+        for col, values in self._data.items():
+            try:
+                val = aggfunc(values)
+            except TypeError:
+                continue
+            new_data[col] = np.array([val])
+        return DataFrame(new_data)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
