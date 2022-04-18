@@ -832,6 +832,37 @@ class DataFrame:
             order = order[::-1]
         return self[order.tolist(), :]
 
+    def sample(self, n=None, frac=None, replace=False, seed=None):
+        """
+        Randomly samples rows the DataFrame
+
+        Parameters
+        ----------
+        n: int
+            number of rows to return
+        frac: float
+            Proportion of the data to sample
+        replace: bool
+            Whether or not to sample with replacement
+        seed: int
+            Seeds the random number generator
+
+        Returns
+        -------
+        A DataFrame
+        """
+        if seed:
+            np.random.seed(seed)
+        if frac is not None:
+            if frac <= 0:
+                raise ValueError('`frac` must be positive')
+            n = int(frac * len(self))
+        if n is not None:
+            if not isinstance(n, int):
+                raise TypeError('`n` must be an int')
+            rows = np.random.choice(np.arange(len(self)), size=n, replace=replace).tolist()
+        return self[rows, :]
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
