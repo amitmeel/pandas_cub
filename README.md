@@ -3,3 +3,5 @@ This repository contains the code for how to build your own Python data analysis
 
 Note: this library will not be the optimized as similar to `pandas` one as this is created just to learn some advance python and how can we create a library from scratch with test-driven developement(TDD) in python.
 
+These is also a udemy course for the same: [Build a Data Analysis Library from Scratch in Python](https://www.udemy.com/course/build-a-data-analysis-library-from-scratch-in-python/) but I will be adding some new functionalities and test cases in future.
+
