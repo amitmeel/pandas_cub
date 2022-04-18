@@ -17,6 +17,9 @@ class DataFrame:
         # check for correct input types
         self._check_input_types(data)
 
+        # check for equal array lengths
+        self._check_array_lengths(data) 
+
     def _check_input_types(self, data):
         """
         Check that the input data is of the correct type.
@@ -32,3 +35,11 @@ class DataFrame:
             else:
                 if values.ndim != 1:
                     raise ValueError("All values must be 1-D Numpy array")
+
+    def _check_array_lengths(self, data):
+        """
+        Check that all arrays in the input data have the same length.
+        """
+        lengths = [len(values) for values in data.values()]
+        if len(set(lengths)) != 1:
+            raise ValueError("All arrays (column values) must have the same length")
