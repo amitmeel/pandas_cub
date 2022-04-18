@@ -237,6 +237,97 @@ class DataFrame:
 
         return DataFrame({'Column Name': col_arr, 'Data Type': np.array(dtypes)})
 
+    def __getitem__(self, item):
+        """
+        Use the brackets operator to simultaneously select rows and columns
+
+        A single string selects one column -> df['colname']
+        A list of strings selects multiple columns -> df[['colname1', 'colname2']]
+        A one column DataFrame of booleans that filters rows -> df[df_bool]
+
+        Row and column selection simultaneously -> df[rs, cs]
+            where cs and rs can be integers, slices, or a list of integers
+            rs can also be a one-column boolean DataFrame
+
+        Returns
+        -------
+        A subset of the original DataFrame
+        """
+        # select a single column -> df['colname']
+        if isinstance(item, str):
+            return DataFrame({item: self._data[item]})
+
+        # select multiple columns -> df[['colname1', 'colname2']]
+        if isinstance(item, list):
+            return DataFrame({col: self._data[col] for col in item})
+
+        # boolean selection
+        if isinstance(item, DataFrame):
+            if item.shape[1] != 1:
+                raise ValueError('Can only pass a one column DataFrame for selection')
+
+            bool_arr = next(iter(item._data.values()))
+            if bool_arr.dtype.kind != 'b':
+                raise TypeError('DataFrame must be a boolean')
+
+            new_data = {}
+            for col, values in self._data.items():
+                new_data[col] = values[bool_arr]
+            return DataFrame(new_data)
+
+        if isinstance(item, tuple):
+            return self._getitem_tuple(item)
+        else:
+            raise TypeError('Select with either a string, a list, or a row and column '
+                            'simultaneous selection')
+
+    def _getitem_tuple(self, item):
+        # simultaneous selection of rows and cols -> df[rs, cs]
+        if len(item) != 2:
+            raise ValueError('Pass either a single string or a two-item tuple inside the '
+                                'selection operator.')
+        row_selection = item[0]
+        col_selection = item[1]
+        if isinstance(row_selection, int):
+            row_selection = [row_selection]
+        elif isinstance(row_selection, DataFrame):
+            if row_selection.shape[1] != 1:
+                raise ValueError('Can only pass a one column DataFrame for selection')
+            row_selection = next(iter(row_selection._data.values()))
+            if row_selection.dtype.kind != 'b':
+                raise TypeError('DataFrame must be a boolean')
+        elif not isinstance(row_selection, (list, slice)):
+            raise TypeError('Row selection must be either an int, slice, list, or DataFrame')
+
+        if isinstance(col_selection, int):
+            col_selection = [self.columns[col_selection]]
+        elif isinstance(col_selection, str):
+            col_selection = [col_selection]
+        elif isinstance(col_selection, list):
+            new_col_selction = []
+            for col in col_selection:
+                if isinstance(col, int):
+                    new_col_selction.append(self.columns[col])
+                else:
+                    new_col_selction.append(col)
+            col_selection = new_col_selction
+        elif isinstance(col_selection, slice):
+            start = col_selection.start
+            stop = col_selection.stop
+            step = col_selection.step
+            if isinstance(start, str):
+                start = self.columns.index(col_selection.start)
+            if isinstance(stop, str):
+                stop = self.columns.index(col_selection.stop) + 1
+
+            col_selection = self.columns[start:stop:step]
+        else:
+            raise TypeError('Column selection must be either an int, string, list, or slice')
+
+        new_data = {}
+        for col in col_selection:
+            new_data[col] = self._data[col][row_selection]
+        return DataFrame(new_data)
 
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
