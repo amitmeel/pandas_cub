@@ -329,6 +329,10 @@ class DataFrame:
             new_data[col] = self._data[col][row_selection]
         return DataFrame(new_data)
 
+    def _ipython_key_completions_(self):
+        # allows for tab completion when doing df['c
+        return self.columns
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
