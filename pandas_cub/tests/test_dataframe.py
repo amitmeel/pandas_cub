@@ -335,3 +335,48 @@ class TestAggregation:
                                    'b': np.array([1]),
                                    'c': np.array([1])})
         assert_df_equals(df_result, df_answer)
+
+
+a3 = np.array(['a', None, 'c'])
+b3 = np.array([11, 5, 8])
+c3 = np.array([3.4, np.nan, 5.1])
+df3 = pdc.DataFrame({'a': a3, 'b': b3, 'c': c3})
+
+a4 = np.array(['a', 'a', 'c'], dtype='O')
+b4 = np.array([11, 5, 5])
+c4 = np.array([3.4, np.nan, 3.4])
+df4 = pdc.DataFrame({'a': a4, 'b': b4, 'c': c4})
+
+class TestOtherMethods:
+
+    def test_isna(self):
+        df_result = df3.isna()
+        df_answer = pdc.DataFrame({'a': np.array([False, True, False]),
+                                   'b': np.array([False, False, False]),
+                                   'c': np.array([False, True, False])})
+        assert_df_equals(df_result, df_answer)
+
+    def test_count(self):
+        df_result = df3.count()
+        df_answer = pdc.DataFrame({'a': np.array([2]),
+                                   'b': np.array([3]),
+                                   'c': np.array([2])})
+        assert_df_equals(df_result, df_answer)
+
+    def test_unique(self):
+        df_result = df4.unique()
+        assert_array_equal(df_result[0].values[:, 0], np.unique(a4))
+        assert_array_equal(df_result[1].values[:, 0], np.unique(b4))
+        assert_array_equal(df_result[2].values[:, 0], np.unique(c4))
+
+    def test_nunique(self):
+        df_result = df4.nunique()
+        df_answer = pdc.DataFrame({'a': np.array([2]),
+                                   'b': np.array([2]),
+                                   'c': np.array([2])})
+        assert_df_equals(df_result, df_answer)
+
+
+a42 = np.array([-11, 5, 3])
+b42 = np.array([3.4, 5.1, -6])
+df42 = pdc.DataFrame({'a': a42, 'b': b42})
