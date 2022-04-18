@@ -445,6 +445,23 @@ class DataFrame:
             new_data[col] = np.array([val])
         return DataFrame(new_data)
 
+    def isna(self):
+        """
+        Determines whether each value in the DataFrame is missing or not
+
+        Returns
+        -------
+        A DataFrame of booleans the same size as the calling DataFrame
+        """
+        new_data = {}
+        for col, values in self._data.items():
+            kind = values.dtype.kind
+            if kind == 'O':
+                new_data[col] = values == None
+            else:
+                new_data[col] = np.isnan(values)
+        return DataFrame(new_data)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
