@@ -494,6 +494,19 @@ class DataFrame:
             return dfs[0]
         return dfs
 
+    def nunique(self):
+        """
+        Find the number of unique values in each column
+
+        Returns
+        -------
+        A DataFrame
+        """
+        new_data = {}
+        for col, value in self._data.items():
+            new_data[col] = np.array([len(np.unique(value))])
+        return DataFrame(new_data)
+
     def _add_docs(self):
         agg_names = ['min', 'max', 'mean', 'median', 'sum', 'var',
                      'std', 'any', 'all', 'argmax', 'argmin']
