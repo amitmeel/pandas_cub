@@ -388,6 +388,41 @@ class DataFrame:
         """
         return self[-n:, :]
 
+    #### Aggregation Methods ####
+
+    def min(self):
+        return self._agg(np.min)
+
+    def max(self):
+        return self._agg(np.max)
+
+    def mean(self):
+        return self._agg(np.mean)
+
+    def median(self):
+        return self._agg(np.median)
+
+    def sum(self):
+        return self._agg(np.sum)
+
+    def var(self):
+        return self._agg(np.var)
+
+    def std(self):
+        return self._agg(np.std)
+
+    def all(self):
+        return self._agg(np.all)
+
+    def any(self):
+        return self._agg(np.any)
+
+    def argmax(self):
+        return self._agg(np.argmax)
+
+    def argmin(self):
+        return self._agg(np.argmin)
+    
     def _agg(self, aggfunc):
         """
         Generic aggregation function that applies the
