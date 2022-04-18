@@ -601,6 +601,16 @@ class DataFrame:
         """
         return self._non_agg(np.minimum.accumulate)
 
+    def cummax(self):
+        """
+        Finds cumulative maximum by column
+
+        Returns
+        -------
+        A DataFrame
+        """
+        return self._non_agg(np.maximum.accumulate)
+
     def _non_agg(self, funcname, kinds='bif', **kwargs):
         """
         Generic non-aggregation function
